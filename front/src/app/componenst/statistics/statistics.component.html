@@ -1,0 +1,100 @@
+
+<form style="display: flex;flex-direction: column;align-items: center" #myForm="ngForm" (ngSubmit)="submit(myForm)">
+  <mat-form-field>
+    <mat-label>year</mat-label>
+    <input name="year" ngModel matInput>
+  </mat-form-field>
+
+  <button type="submit" mat-raised-button>Submit</button>
+</form>
+
+@if (year){
+
+  <div class="fatherTable">
+
+    <div>
+      <h2>Users registered</h2>
+      <table mat-table [dataSource]="users" class="mat-elevation-z8">
+        <ng-container matColumnDef="month">
+          <th mat-header-cell *matHeaderCellDef> Month </th>
+          <td mat-cell *matCellDef="let element"> {{element.month | monthTitle}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="count">
+          <th mat-header-cell *matHeaderCellDef> Count </th>
+          <td mat-cell *matCellDef="let element"> {{element.count}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedUserColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedUserColumns;"></tr>
+      </table>
+    </div>
+
+
+<div>
+  <h2>Posts created</h2>
+  <table mat-table [dataSource]="posts" class="mat-elevation-z8">
+    <ng-container matColumnDef="month">
+      <th mat-header-cell *matHeaderCellDef> Month </th>
+      <td mat-cell *matCellDef="let element"> {{element.month | monthTitle}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="count">
+      <th mat-header-cell *matHeaderCellDef> Count </th>
+      <td mat-cell *matCellDef="let element"> {{element.count}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedPostColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedPostColumns;"></tr>
+  </table>
+</div>
+
+
+<div>
+  <h2>Total likes</h2>
+  <table mat-table [dataSource]="likes" class="mat-elevation-z8">
+    <ng-container matColumnDef="month">
+      <th mat-header-cell *matHeaderCellDef> Month </th>
+      <td mat-cell *matCellDef="let element"> {{element.month | monthTitle}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="count">
+      <th mat-header-cell *matHeaderCellDef> Count </th>
+      <td mat-cell *matCellDef="let element"> {{element.count}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedLikeColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedLikeColumns;"></tr>
+  </table>
+</div>
+
+<div>
+
+  <h2>Most Liked Post</h2>
+  <table mat-table [dataSource]="mostLiked" class="mat-elevation-z8">
+    <ng-container matColumnDef="month">
+      <th mat-header-cell *matHeaderCellDef> Month </th>
+      <td mat-cell *matCellDef="let element"> {{element.month | monthTitle}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="postId">
+      <th mat-header-cell *matHeaderCellDef> Post ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.postId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="likeCount">
+      <th mat-header-cell *matHeaderCellDef> Like Count </th>
+      <td mat-cell *matCellDef="let element"> {{element.likeCount}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedMostLikedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedMostLikedColumns;"></tr>
+  </table>
+</div>
+
+  </div>
+
+}
+
+
+

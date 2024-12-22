@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CAPI", "CAPI\CAPI.csproj", "{B818A681-5E8A-4EA1-B5AB-21DB2FA06364}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B818A681-5E8A-4EA1-B5AB-21DB2FA06364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B818A681-5E8A-4EA1-B5AB-21DB2FA06364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B818A681-5E8A-4EA1-B5AB-21DB2FA06364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B818A681-5E8A-4EA1-B5AB-21DB2FA06364}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

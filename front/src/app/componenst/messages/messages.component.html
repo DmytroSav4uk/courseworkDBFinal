@@ -1,0 +1,120 @@
+
+<div style="display: flex">
+  <form #conForm="ngForm" (ngSubmit)="submit(conForm)">
+
+    <h1>Get Conversation:</h1>
+
+    <div>
+      <mat-form-field>
+        <mat-label>userId1</mat-label>
+        <input name="userId1"  ngModel matInput>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>userId2</mat-label>
+        <input name="userId2"  ngModel matInput>
+      </mat-form-field>
+
+
+      <button mat-raised-button>Get Conversation</button>
+
+
+    </div>
+  </form>
+  <form #writeForm="ngForm" (ngSubmit)="writeMessage(writeForm)">
+
+    <h1>Write a message:</h1>
+
+    <div>
+      <mat-form-field>
+        <mat-label>sender Id</mat-label>
+        <input name="senderId"  ngModel matInput>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>receiver Id</mat-label>
+        <input name="receiverId"  ngModel matInput>
+      </mat-form-field>
+
+
+      <mat-form-field>
+        <mat-label>Content</mat-label>
+        <input name="content"  ngModel matInput>
+      </mat-form-field>
+
+      <button mat-raised-button>Write a message</button>
+
+
+    </div>
+  </form>
+</div>
+
+
+@if (data){
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="data" matSort>
+
+      <!-- Message ID Column -->
+      <ng-container matColumnDef="messageId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Message ID </th>
+        <td mat-cell *matCellDef="let row"> {{row.messageId}} </td>
+      </ng-container>
+
+      <!-- Sender ID Column -->
+      <ng-container matColumnDef="senderId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Sender ID </th>
+        <td mat-cell *matCellDef="let row">
+          {{row.senderId}}
+        </td>
+      </ng-container>
+
+      <!-- Receiver ID Column -->
+      <ng-container matColumnDef="receiverId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Receiver ID </th>
+        <td mat-cell *matCellDef="let row"> {{row.receiverId}} </td>
+      </ng-container>
+
+      <!-- Content Column -->
+      <ng-container matColumnDef="content">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Content </th>
+        <td mat-cell *matCellDef="let row"> {{row.content}} </td>
+      </ng-container>
+
+      <!-- Sent At Column -->
+      <ng-container matColumnDef="sentAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Sent At </th>
+        <td mat-cell *matCellDef="let row"> {{row.sentAt}} </td>
+      </ng-container>
+
+      <!-- Edited At Column -->
+      <ng-container matColumnDef="editedAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Edited At </th>
+        <td mat-cell *matCellDef="let row"> {{row.editedAt || 'N/A'}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="deleteMessage">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete Message </th>
+        <td mat-cell *matCellDef="let row">
+
+          <button mat-raised-button (click)="deleteMessage(row.messageId)"> delete </button>
+
+        </td>
+      </ng-container>
+
+      <!-- Table Header and Rows -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+          [ngStyle]="{
+        'background': row.senderId === user1 ? 'light-blue' : (row.senderId === user2 ? 'lightgreen' : '')
+    }">
+      </tr>
+
+
+    </table>
+  </div>
+} @else {
+  <h1>No Data</h1>
+}
+
+

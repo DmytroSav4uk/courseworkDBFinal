@@ -1,0 +1,60 @@
+
+
+<form #filters="ngForm">
+  <mat-form-field>
+    <mat-label>User ID</mat-label>
+    <input
+      matInput
+      ngModel
+      name="userId"
+      placeholder="User ID"
+      (ngModelChange)="onSubmit(filters)"
+    >
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Post ID</mat-label>
+    <input
+      matInput
+      ngModel
+      name="postId"
+      placeholder="Post ID"
+      (ngModelChange)="onSubmit(filters)"
+    >
+  </mat-form-field>
+</form>
+
+
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="likes" matSort class="mat-table">
+    <!-- Like ID Column -->
+    <ng-container matColumnDef="likeId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Like ID </th>
+      <td mat-cell *matCellDef="let like"> {{ like.likeId }} </td>
+    </ng-container>
+
+    <!-- User ID Column -->
+    <ng-container matColumnDef="userId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> User ID </th>
+      <td mat-cell *matCellDef="let like"> {{ like.userId }} </td>
+    </ng-container>
+
+    <!-- Post ID Column -->
+    <ng-container matColumnDef="postId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Post ID </th>
+      <td mat-cell *matCellDef="let like"> {{ like.postId }} </td>
+    </ng-container>
+
+    <!-- Liked At Column -->
+    <ng-container matColumnDef="likedAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Liked At </th>
+      <td mat-cell *matCellDef="let like"> {{ like.likedAt }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+
+</div>

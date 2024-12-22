@@ -1,0 +1,9 @@
+/* Style for rows where senderId matches user1 */
+.user1-color {
+  background: #000000 !important; /* You can change the color */
+}
+
+/* Style for rows where senderId matches user2 */
+.user2-color {
+  background: lightgreen!important; /* You can change the color */
+}

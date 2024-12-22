@@ -1,0 +1,185 @@
+<form class="createForm" #createPostForm="ngForm" (ngSubmit)="createPost(createPostForm)">
+
+  <div>
+    <mat-form-field>
+      <mat-label>User Id</mat-label>
+      <input name="userId" ngModel matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Content</mat-label>
+      <input name="content" ngModel matInput>
+    </mat-form-field>
+  </div>
+
+
+  <button type="button" mat-raised-button (click)="fileInput.click()">Choose Image</button>
+  <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file">
+
+  <button type="submit" mat-raised-button color="primary">Add New Post</button>
+</form>
+
+
+<table matSort mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+
+
+  <ng-container matColumnDef="postId">
+    <th mat-header-cell *matHeaderCellDef> Post ID</th>
+    <td mat-cell *matCellDef="let element"> {{ element.postId }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="userId">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef> User ID</th>
+    <td mat-cell *matCellDef="let element"> {{ element.userId }}</td>
+  </ng-container>
+
+  <!-- Content Column -->
+  <ng-container matColumnDef="content">
+    <th mat-header-cell *matHeaderCellDef> Content</th>
+    <td mat-cell *matCellDef="let element"> {{ element.content }}</td>
+  </ng-container>
+
+  <!-- Created At Column -->
+  <ng-container matColumnDef="createdAt">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef> Created At</th>
+    <td mat-cell *matCellDef="let element"> {{ element.createdAt }}</td>
+  </ng-container>
+
+  <!-- Edited At Column -->
+  <ng-container matColumnDef="editedAt">
+    <th mat-header-cell *matHeaderCellDef> Edited At</th>
+    <td mat-cell *matCellDef="let element"> {{ element.editedAt }}</td>
+  </ng-container>
+
+  <!-- Like Count Column -->
+  <ng-container matColumnDef="likeCount">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef> Like Count</th>
+    <td mat-cell *matCellDef="let element"> {{ element.likeCount }}</td>
+  </ng-container>
+
+  <!-- Image Column (manually handled) -->
+  <ng-container matColumnDef="image">
+    <th mat-header-cell *matHeaderCellDef> Image</th>
+    <td mat-cell *matCellDef="let element">
+      @if (element.image) {
+        <img [src]="'data:image/jpg;base64,' + element.image" style="width: 100px; height: auto"/>
+      } @else {
+        <span>No Image</span>
+      }
+    </td>
+  </ng-container>
+
+  <!-- Expand Button Column -->
+  <ng-container matColumnDef="expand">
+    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button aria-label="expand row" (click)="toggleRowExpand(element); $event.stopPropagation()">
+        <mat-icon>{{ expandedElement === element ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Expanded Content Column - The detail row -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length + 1">
+      <div class="example-element-detail"
+           [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
+        <div class="example-element-description">
+
+          <div style="width: 700px">
+            <strong>Comments:</strong>
+            @if (expandedData && expandedData.length > 0) {
+
+              <table>
+                <thead>
+                <tr>
+                  <th>Comment ID</th>
+                  <th>User ID</th>
+                  <th>Post ID</th>
+                  <th>Content</th>
+                  <th>Created At</th>
+                  <th>Edited At</th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (comment of expandedData; track comment) {
+                    <tr>
+                      <td>{{ comment.commentId }}</td>
+                      <td>{{ comment.userId }}</td>
+                      <td>{{ comment.postId }}</td>
+                      <td>{{ comment.content }}</td>
+                      <td>{{ comment.createdAt }}</td>
+                      <td>{{ comment.editedAt ? (comment.editedAt) : 'Not edited' }}</td>
+                    </tr>
+                  }
+
+
+                </tbody>
+              </table>
+            }
+          </div>
+
+          <div>
+            <form #commentForm="ngForm" (ngSubmit)="onSubmit(commentForm,element.postId)">
+              <mat-form-field>
+                <mat-label>User Id</mat-label>
+                <input name="userId" ngModel matInput>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Content</mat-label>
+                <input name="content" ngModel matInput>
+              </mat-form-field>
+
+              <button type="submit" mat-button>Add Comment</button>
+            </form>
+            <div class="controls">
+              <button (click)="deletePost(element.postId)" mat-button>Delete Post</button>
+            </div>
+            <div>
+              <form #editForm=ngForm (ngSubmit)="submitEdit(element.postId,editForm)">
+                <mat-form-field>
+                  <mat-label>Content</mat-label>
+                  <input name="content" ngModel matInput>
+                </mat-form-field>
+
+
+                <button type="button" mat-raised-button (click)="fileInput.click()">Choose Image</button>
+                <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file">
+
+
+                <button type="submit" mat-button>Edit</button>
+              </form>
+            </div>
+            <div>
+              <form #likeForm=ngForm (ngSubmit)="addLike(element.postId,likeForm)">
+                <mat-form-field>
+                  <mat-label>user id</mat-label>
+                  <input name="userId" ngModel matInput>
+                </mat-form-field>
+
+                <button type="submit" mat-button>Like</button>
+              </form>
+              <form #deleteLikeForm=ngForm (ngSubmit)="deleteLike(element.postId,deleteLikeForm)">
+                <mat-form-field>
+                  <mat-label>user id</mat-label>
+                  <input name="userId" ngModel matInput>
+                </mat-form-field>
+                <button type="submit" mat-button>Delete Like</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <!-- Header and Data Rows -->
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="toggleRowExpand(element)">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>
